@@ -13,6 +13,13 @@ class Application < Sinatra::Base
   get '/names' do
     return "Julia, Mary, Karim"
   end
+
+  post '/sort-names' do
+    names = "Joe,Alice,Zoe,Julia,Kieran"
+    sorted_names = names.split(",").sort
+
+    return sorted_names.join(",")
+  end
 end
 
 #http://localhost:9292/hello?name=Afrika

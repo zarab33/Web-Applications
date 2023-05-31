@@ -15,4 +15,13 @@ describe Application do
             expect(response.body).to eq("Julia, Mary, Karim")
         end
     end
+
+    context "POST /sort-names" do
+        it "should return names sorted alphabetically" do
+            response = post("/sort-names")
+
+            expect(response.status).to eq(200)
+            expect(response.body).to eq("Alice,Joe,Julia,Kieran,Zoe")
+        end
+    end
 end
