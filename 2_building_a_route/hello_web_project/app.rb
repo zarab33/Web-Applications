@@ -9,6 +9,10 @@ class Application < Sinatra::Base
 
   return "Thanks #{name}, you sent this message:#{message}"
   end
+
+  get '/names' do
+    return "Julia, Mary, Karim"
+  end
 end
 
 #http://localhost:9292/hello?name=Afrika
