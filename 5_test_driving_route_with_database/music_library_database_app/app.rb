@@ -25,7 +25,7 @@ class Application < Sinatra::Base
     return response
   end
 
-  post '/albums' do
+    post '/albums' do
     repo = AlbumRepository.new
     new_album = Album.new
     new_album.title = params[:title]
@@ -35,5 +35,16 @@ class Application < Sinatra::Base
     repo.create(new_album)
 
     return('')
+  end
+
+  get '/artists' do
+    repo = ArtistRepository.new
+    artists =repo.all
+
+    response = artists. map do |artist|
+      artist.name
+    end.join(', ')
+
+    return response
   end
 end
