@@ -14,7 +14,7 @@ class Application < Sinatra::Base
     also_reload 'lib/artist_repository'
   end
 
-  post '/albums' do
+  get '/albums' do
     repo = AlbumRepository.new
     albums = repo.all
 
