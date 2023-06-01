@@ -80,16 +80,31 @@ include Rack::Test::Methods
 
 let(:app) { Application.new }
 
-context 'POST /albums' do
+context 'GET /albums' do
 it "should return a list of albums" do
-response = post(/albums)
+response = get("/albums")
 
-      expected_response = ("Surfer Rosa, Waterloo, Super Trouper, Bossanova,
-         Lover, Folklore, I Put a Spell on You, Baltimore, Here Comes the Sun,
-          Fodder on My Wings, Ring Ring")
+      expected_response = ("Surfer Rosa, Waterloo, Super Trouper, Bossanova, Lover, Folklore, I Put a Spell on You, Baltimore, Here Comes the Sun, Fodder on My Wings, Ring Ring")
 
           expect(response.status).to eq(200)
           expect(response.body).to eq(expected_response)
+
+    end
+
+end
+
+context 'POST /albums' do
+it "should create a new album" do
+response = post('/albums', title: 'Voyage',
+release_year: '2022',
+artist_id: '2')
+
+      expect(response.status).to eq(200)
+      expect(response.body).to eq('')
+
+      response =get('/albums')
+
+      expect(response.body).to include('Voyage')
     end
 
 end
