@@ -2,23 +2,27 @@ require "spec_helper"
 require "rack/test"
 require_relative '../../app'
 
-def reset_albums_table
-  seed_sql = File.read('spec/seeds/albums_seeds.sql')
-  connection = PG.connect({ host: '127.0.0.1', dbname: 'music_library_test' })
-  connection.exec(seed_sql)
-end
-
-describe Application do
-
-  before(:each) do 
-    reset_albums_table
-  end
-  # This is so we can use rack-test helper methods.
+RSpec.describe Application do
   include Rack::Test::Methods
 
-  # We need to declare the `app` value by instantiating the Application
-  # class so our tests work.
-  let(:app) { Application.new }
+  let(:app) { Application }
+
+  def reset_albums_table
+    seed_sql = File.read('spec/seeds/albums_seeds.sql')
+    connection = PG.connect({ host: '127.0.0.1', dbname: 'music_library_test' })
+    connection.exec(seed_sql)
+  end
+
+   def reset_artists_table
+    seed_sql = File.read('spec/seeds/artists_seeds.sql')
+    connection = PG.connect({ host: '127.0.0.1', dbname: 'music_library_test' })
+    connection.exec(seed_sql)
+  end
+  
+  before(:each) do 
+    reset_albums_table
+    reset_artists_table
+  end
 
   context 'GET /albums' do
     it "should return a list of albums" do
@@ -61,20 +65,16 @@ describe Application do
 
   context 'POST /artists' do
     it 'should create a new artist' do
-      response = post('/artists')
-
-      expected_response = ('/artists', name: 'Wild nothing',
-                            genre: 'Indie')
+      response = post('/artists', name: 'Wild nothing', genre: 'Indie')
 
       expect(response.status).to eq(200)
       expect(response.body).to eq('')
 
       response = get('/artists')
 
-      expect(response.body).to eq('Pixies,
-                            ABBA,
-                            Taylor Swift,
-                            Nina Simone, Wild nothing')
+      expected_response = 'Pixies, ABBA, Taylor Swift, Nina Simone, Wild nothing'
+
+      expect(response.body).to eq(expected_response)
     end
   end
 end
