@@ -3,6 +3,15 @@ require 'sinatra/reloader'
 
 class Application < Sinatra::Base
 
+  get '/hello' do
+    return '<html>
+          <head></head>
+          <body>
+          <h1>Hello!</h1>
+          </body>
+          </html>'
+  end
+
   post '/submit' do
   name = params[:name]  
   message = params[:message]
